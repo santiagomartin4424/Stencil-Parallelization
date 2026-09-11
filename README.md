@@ -1,6 +1,6 @@
 # ⚡ Stencil Operation Parallelization
 
-This project presents the parallel implementation of a 2D Stencil operation using **MPI** (Process-level) and **OpenMP** (Thread-level), with its respective [benchmarking study](Stencil_heat_equation_mpi_and_omp.pdf)..
+This project presents the parallel implementation of a 2D Stencil operation using **MPI** (Process-level) and **OpenMP** (Thread-level), with its respective [benchmarking study](Stencil_heat_equation_mpi_and_omp.pdf).
 
 
 ## Setup
