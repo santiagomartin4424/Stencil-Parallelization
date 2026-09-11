@@ -1,3 +1,4 @@
+
 # ⚡ Stencil Operation Parallelization
 In this project presents the parallel performance optimization of a 2D Stencil computation using **MPI** (Process-level) and **OpenMP** (Thread-level), with its respective benchmarking study.
 
@@ -22,7 +23,7 @@ make
 2. Execution. (n MPI processes will be created, being n the number of physical cores of your machine)
 ```
 mpirun ./stencil_mpi
-´´´
+```
 
 
 🧵 How to execute the OpenMP Version (Thread-Level Parallelism)
@@ -35,7 +36,8 @@ export OMP_NUM_THREADS=6
 ```
 
 2. Execution. Run the OpenMP executable.
+```
 ./stencil_mpi_omp
-
+```
 
 
