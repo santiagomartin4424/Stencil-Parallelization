@@ -7,6 +7,8 @@
 #include <mpi.h>
 
 #define STENCIL_SIZE 500
+//The STENCIL_SIZE value can be modified to 20, 200, 300 or 500 for example. When doing this, it is recommended to comment the display_matrix function, and remove the call of this function in stencil_init_mpi()
+
 
 typedef float stencil_t;
 
@@ -34,6 +36,21 @@ static int rank;
 static int nprocs;
 
 static int local_ny;     // number of real rows of the process. size_x keeps being global. size_y no (local_ny)
+
+
+
+
+/** display the global matrix from a pointer, after using gatherv*/
+static void stencil_display_global(stencil_t *buf)
+{
+    int x, y;
+    for (y = 0; y < size_y; y++) {
+        for (x = 0; x < size_x; x++) {
+            printf("%8.5g ", buf[x + size_x * y]);
+        }
+        printf("\n");
+    }
+}
 
 
 /** init stencil values to 0, borders to non-zero */
@@ -107,6 +124,7 @@ static void stencil_init_mpi(void)
     memcpy(prev_values, values, (local_ny + 2) * size_x * sizeof(stencil_t)); //the previous state is the current state when initializing...
 
     if (rank == 0) {
+
         free(global_values);    //free, it's no longer needed
         free(sendcounts);
         free(displs);
@@ -120,17 +138,6 @@ static void stencil_free(void)
 }
 
 
-/** display the global matrix from a pointer, after using gatherv*/
-static void stencil_display_global(stencil_t *buf)
-{
-    int x, y;
-    for (y = 0; y < size_y; y++) {
-        for (x = 0; x < size_x; x++) {
-            printf("%8.5g ", buf[x + size_x * y]);
-        }
-        printf("\n");
-    }
-}
 
 
 /*each process sends their 1st and last real row, and each one receives its superior halo, and its inferior halo (row).*/
@@ -218,7 +225,7 @@ void display_matrix(int s, double t_usec)
     int base = size_y / nprocs;
     int rest = size_y % nprocs;
 
-/* <-- uncomment to see result
+/* <-- uncomment to see result, begin 
     if (rank == 0) {
         global_values = malloc(size_y * size_x * sizeof(stencil_t));
         sendcounts = malloc(nprocs * sizeof(int));
@@ -247,7 +254,7 @@ void display_matrix(int s, double t_usec)
         0,
         MPI_COMM_WORLD
     );
-*/ //<-- uncomment to see result
+ <-- uncomment to not see result, end */
 
     if (rank == 0) {
         // imprimir tiempo, pasos, gflops
@@ -255,11 +262,11 @@ void display_matrix(int s, double t_usec)
         printf("# time = %g usecs.\n", t_usec);
         printf("# gflops = %g\n", (6.0 * size_x * size_y * s) / (t_usec * 1000));
        
-/*      stencil_display_global(global_values);
-        free(global_values);
-        free(sendcounts);
-        free(displs);
-*/
+        //stencil_display_global(global_values);
+        //free(global_values);
+        //free(sendcounts);
+        //free(displs);
+
     }
 
 }
@@ -290,10 +297,11 @@ int main(int argc, char**argv)
     {
       int convergence_local = stencil_step_mpi();
 
-     if(s % 100 == 0)   //for each 100 iterations, we check convergence
-      //All make a ogic AND logic
-      MPI_Allreduce(&convergence_local, &convergence_global, 1, MPI_INT, MPI_LAND, MPI_COMM_WORLD);
 
+      if(s % 100 == 0) {  //for each 100 iterations, we check convergence
+        //All make a logic AND logic
+        MPI_Allreduce(&convergence_local, &convergence_global, 1, MPI_INT, MPI_LAND, MPI_COMM_WORLD);
+      }
       if (convergence_global) break;
     }
 

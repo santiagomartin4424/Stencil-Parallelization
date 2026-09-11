@@ -1,43 +1,33 @@
-
----COMMENTS----------------------------------------------------
-
-Comments from the first MPI version file are up to date and in english
-
-However, in the other two files, comment are in spanish.
+STENCIL OPERATION PARALLELIZATION 
 
 
 
-The comments that are in the first MPI file are the ones indicated to understand the code.
+COMPILATION AND EXECUTION FOR THE MPI version -------------------------------------
+OpenMPI paralellizes at the level of processes.
 
+For the MPI pure version, write in the terminal:
 
+sudo apt update
+sudo apt install openmpi-bin libopenmpi-dev
 
-
-
-
-
-
----COMPILATION AND EXECUTION-------------------------------------
-
-MPI pure version:
 make
 
-mpirun -H miriel002:24,miriel003:24 -np 4 ./stencil
-(two nodes, four processes per example)
+mpirun ./stencil_mpi
+(it will create n MPI process, being n the number of physical cores of your machine)
 
 
 
 
-OPENMP version:
-export OMP_NUM_THREADS= 6   to set the number of threads, six for example.
-./stencil
+COMPILATION AND EXECUTION FOR THE OPENMP version -------------------------------------
+OpenMP paralellizes at the level of threads.
+
+For the OMP pure version, write in the terminal:
 
 
+export OMP_NUM_THREADS=6 
+(set the number of threads to six for example, or what is best for your machine)(put OMP_NUM_THREADS=n_threads, in this case 6, without spaces)
+
+./stencil_mpi_omp
 
 
-OPENMP + MPI version:
-export OMP_NUM_THREADS= 6
-
-and then run with mpirun
-
-mpirun -H miriel002:24,miriel003:24 -np 4 ./stencil
 

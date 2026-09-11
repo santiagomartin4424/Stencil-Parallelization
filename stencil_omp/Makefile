@@ -1,13 +1,16 @@
 CC      = mpicc
-# Añadimos -fopenmp aquí
-CFLAGS  = -Wall -g -O3 -std=c99 -fopenmp
-LDLIBS  = -lm -lrt -fopenmp
+CFLAGS += -Wall -g -O3 -std=c99 -fopenmp
+LDLIBS += -lm -lrt
 
-all: stencil
+TARGET  = stencil_omp
+SRC     = stencil_omp.c
 
-stencil: stencil.c
-	$(CC) $(CFLAGS) stencil.c -o stencil $(LDLIBS)
+all: $(TARGET)
+
+$(TARGET): $(SRC)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRC) $(LDLIBS)
 
 clean:
-	-rm -f stencil
+	rm -f $(TARGET)
 
+.PHONY: all clean

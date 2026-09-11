@@ -1,15 +1,16 @@
 CC      = mpicc
-CFLAGS  = -Wall -g -O4 -std=c99
-LDLIBS  = -lm -lrt
+CFLAGS += -Wall -g -O3 -std=c99
+LDLIBS += -lm -lrt
 
-all: stencil
+TARGET  = stencil_mpi
+SRC     = stencil_mpi.c
 
-stencil: stencil.c
-	$(CC) $(CFLAGS) stencil.c -o stencil $(LDLIBS)
+all: $(TARGET)
+
+$(TARGET): $(SRC)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRC) $(LDLIBS)
 
 clean:
-	-rm -f stencil
+	rm -f $(TARGET)
 
-mrproper: clean
-	-rm -f *~
-
+.PHONY: all clean
