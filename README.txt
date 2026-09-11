@@ -1,32 +1,40 @@
-STENCIL OPERATION PARALLELIZATION 
+# ⚡ Stencil Operation Parallelization
+In this project presents the parallel performance optimization of a 2D Stencil computation using **MPI** (Process-level) and **OpenMP** (Thread-level), with its respective benchmarking study.
 
 
+## Prerequisites & Setup
+Before building the project, install the required dependencies:
 
-COMPILATION AND EXECUTION FOR THE MPI version -------------------------------------
-OpenMPI paralellizes at the level of processes.
-
-For the MPI pure version, write in the terminal:
-
+```bash
 sudo apt update
 sudo apt install openmpi-bin libopenmpi-dev
+```
 
+
+🌐 How to execute the MPI Version (Process-Level Parallelism)
+OpenMPI parallelizes the execution at the level of processes. 
+
+1. Compilation
+```
+cd stencil_mpi
 make
-
+```
+2. Execution. (n MPI processes will be created, being n the number of physical cores of your machine)
+```
 mpirun ./stencil_mpi
-(it will create n MPI process, being n the number of physical cores of your machine)
+´´´
 
 
+🧵 How to execute the OpenMP Version (Thread-Level Parallelism)
+OpenMP parallelizes execution at the thread level.
 
-
-COMPILATION AND EXECUTION FOR THE OPENMP version -------------------------------------
-OpenMP paralellizes at the level of threads.
-
-For the OMP pure version, write in the terminal:
-
-
+1. Set Environment Variables. (set the target number of threads. Ensure there are no spaces around =. For example, you can use 6 threads)
+```
+cd stencil_omp
 export OMP_NUM_THREADS=6 
-(set the number of threads to six for example, or what is best for your machine)(put OMP_NUM_THREADS=n_threads, in this case 6, without spaces)
+```
 
+2. Execution. Run the OpenMP executable.
 ./stencil_mpi_omp
 
 
